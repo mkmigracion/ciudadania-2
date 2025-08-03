@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulador de Examen de Ciudadanía | MKMK</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans antialiased">
+  <header class="text-center py-8 bg-white shadow">
+    <img src="logo.png" alt="MKMK Logo" class="mx-auto w-32 h-auto" />
+    <h1 class="text-2xl font-semibold mt-4">Simulador de Examen de Ciudadanía Americana</h1>
+  </header>
+  <main id="app" class="max-w-4xl mx-auto p-6"></main>
+  <footer class="text-center mt-12 text-sm text-gray-600">
+    <p class="mb-2">
+      © 2025 MKMK • mail: <a href="mailto:info@mkmk.com" class="underline">info@mkmk.com</a> •
+      Tel: <a href="tel:+11234567890" class="underline">+1 (123) 456-7890</a>
+    </p>
+    <p>Síguenos: <a href="https://facebook.com/mkmk" class="underline">Facebook</a> | <a href="https://instagram.com/mkmk" class="underline">Instagram</a></p>
+    <p class="mt-4 font-medium">¡Gracias por estudiar con nosotros y confiar en tu futuro!</p>
+  </footer>
+  <script>
+    const SECTIONS = 10;
+    const questions = [
+  {
+    "es": "¿Cuál es la ley suprema de la nación?",
+    "en": "What is the supreme law of the land?",
+    "choices": [
+      "La Constitución / The Constitution",
+      "El Congreso / The Congress",
+      "La Corte Suprema / The Supreme Court"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué hace la Constitución?",
+    "en": "What does the Constitution do?",
+    "choices": [
+      "Establece el gobierno / Sets up the government",
+      "Declara la guerra / Declares war",
+      "Elige al Presidente / Elects the President"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Las primeras tres palabras de la Constitución contienen la idea de autogobierno. ¿Cuáles son estas palabras?",
+    "en": "The idea of self-government is in the first three words of the Constitution. What are these words?",
+    "choices": [
+      "Nosotros el Pueblo / We the People",
+      "Por la Libertad / For the Liberty",
+      "Unidos en Paz / United in Peace"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué es una enmienda?",
+    "en": "What is an amendment?",
+    "choices": [
+      "Un cambio a la Constitución / A change to the Constitution",
+      "Una elección presidencial / A presidential election",
+      "Una decisión judicial / A court decision"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cómo llamamos las primeras diez enmiendas a la Constitución?",
+    "en": "What do we call the first ten amendments to the Constitution?",
+    "choices": [
+      "Declaración de Derechos / Bill of Rights",
+      "Artículos de la Confederación / Articles of Confederation",
+      "Tratado de Libertad / Treaty of Freedom"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuál es un derecho o libertad que garantiza la Primera Enmienda?",
+    "en": "What is one right or freedom from the First Amendment?",
+    "choices": [
+      "Libertad de expresión / Freedom of speech",
+      "Derecho al voto / Right to vote",
+      "Portar armas / Bear arms"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuántas enmiendas tiene la Constitución?",
+    "en": "How many amendments does the Constitution have?",
+    "choices": [
+      "27 / 27",
+      "10 / 10",
+      "50 / 50"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué hizo la Declaración de Independencia?",
+    "en": "What did the Declaration of Independence do?",
+    "choices": [
+      "Proclamó nuestra independencia / Announced our independence",
+      "Redactó la Constitución / Drafted the Constitution",
+      "Creó el sistema bancario / Created the banking system"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuáles son dos derechos en la Declaración de Independencia?",
+    "en": "What are two rights in the Declaration of Independence?",
+    "choices": [
+      "Vida y libertad / Life and liberty",
+      "Educación y salud / Education and health",
+      "Trabajo y vivienda / Work and housing"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué es la libertad de religión?",
+    "en": "What is freedom of religion?",
+    "choices": [
+      "Practicar o no cualquier religión / Practice or not practice any religion",
+      "Seguir la religión oficial / Follow the official religion",
+      "Solo religiones cristianas / Only Christian religions"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuál es el sistema económico de los Estados Unidos?",
+    "en": "What is the economic system of the United States?",
+    "choices": [
+      "Economía capitalista / Capitalist economy",
+      "Economía comunista / Communist economy",
+      "Economía feudal / Feudal economy"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué es “el estado de derecho” (rule of law)?",
+    "en": "What is the rule of law?",
+    "choices": [
+      "Todos deben obedecer la ley / Everyone must follow the law",
+      "El presidente está por encima de la ley / The president is above the law",
+      "Solo los jueces siguen la ley / Only judges follow the law"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Nombre una rama o parte del gobierno.",
+    "en": "Name one branch or part of the government.",
+    "choices": [
+      "El Congreso / Congress",
+      "La Reserva Federal / Federal Reserve",
+      "La Policía / Police"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué evita que una rama del gobierno se vuelva demasiado poderosa?",
+    "en": "What stops one branch of government from becoming too powerful?",
+    "choices": [
+      "Pesos y contrapesos / Checks and balances",
+      "Elecciones federales / Federal elections",
+      "Ley marcial / Martial law"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Quién está a cargo de la rama ejecutiva?",
+    "en": "Who is in charge of the executive branch?",
+    "choices": [
+      "El Presidente / The President",
+      "El Vicepresidente / The Vice President",
+      "El Presidente del Senado / The President of the Senate"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Quién crea las leyes federales?",
+    "en": "Who makes federal laws?",
+    "choices": [
+      "El Congreso / Congress",
+      "La Corte Suprema / The Supreme Court",
+      "Los gobernadores / The governors"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuáles son las dos partes que integran el Congreso de los Estados Unidos?",
+    "en": "What are the two parts of the U.S. Congress?",
+    "choices": [
+      "El Senado y la Cámara de Representantes / Senate and House of Representatives",
+      "La Cámara de Lores y Comunes / Lords and Commons",
+      "Consejo y Asamblea / Council and Assembly"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuántos senadores de los Estados Unidos hay?",
+    "en": "How many U.S. Senators are there?",
+    "choices": [
+      "100 / 100",
+      "50 / 50",
+      "435 / 435"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿De cuántos años es el término de elección de un senador de los Estados Unidos?",
+    "en": "We elect a U.S. Senator for how many years?",
+    "choices": [
+      "6 / 6",
+      "4 / 4",
+      "2 / 2"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuántos miembros votantes tiene la Cámara de Representantes?",
+    "en": "The House of Representatives has how many voting members?",
+    "choices": [
+      "435 / 435",
+      "100 / 100",
+      "50 / 50"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿De cuántos años es el término de elección de un representante?",
+    "en": "We elect a U.S. Representative for how many years?",
+    "choices": [
+      "2 / 2",
+      "4 / 4",
+      "6 / 6"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿A quiénes representa un senador de los Estados Unidos?",
+    "en": "Who does a U.S. Senator represent?",
+    "choices": [
+      "A todas las personas del estado / All people of the state",
+      "Solo a los votantes que lo eligieron / Only the voters who elected them",
+      "Al partido político / The political party"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Por qué algunos estados tienen más representantes que otros?",
+    "en": "Why do some states have more Representatives than other states?",
+    "choices": [
+      "Por la población del estado / Because of the state’s population",
+      "Por el tamaño geográfico / Geographic size",
+      "Por la edad del estado / Age of the state"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿De cuántos años es el término de elección de un presidente?",
+    "en": "We elect a President for how many years?",
+    "choices": [
+      "4 / 4",
+      "2 / 2",
+      "6 / 6"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿En qué mes votamos por el presidente?",
+    "en": "In what month do we vote for President?",
+    "choices": [
+      "Noviembre / November",
+      "Enero / January",
+      "Julio / July"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cómo se llama el Presidente de los Estados Unidos ahora?",
+    "en": "What is the name of the President of the United States now?",
+    "choices": [
+      "Joe Biden / Joe Biden",
+      "Donald Trump / Donald Trump",
+      "Barack Obama / Barack Obama"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cómo se llama el Vicepresidente de los Estados Unidos ahora?",
+    "en": "What is the name of the Vice President of the United States now?",
+    "choices": [
+      "Kamala Harris / Kamala Harris",
+      "Mike Pence / Mike Pence",
+      "Nancy Pelosi / Nancy Pelosi"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Si el Presidente ya no puede cumplir sus funciones, ¿quién se convierte en Presidente?",
+    "en": "If the President can no longer serve, who becomes President?",
+    "choices": [
+      "El Vicepresidente / The Vice President",
+      "El Presidente de la Cámara / The Speaker of the House",
+      "El Secretario de Estado / The Secretary of State"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Si tanto el Presidente como el Vicepresidente ya no pueden servir, ¿quién se convierte en Presidente?",
+    "en": "If both the President and the Vice President can no longer serve, who becomes President?",
+    "choices": [
+      "El Presidente de la Cámara de Representantes / The Speaker of the House",
+      "El Presidente Pro Tempore / The President Pro Tempore",
+      "El Secretario de Defensa / The Secretary of Defense"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Quién es el Comandante en Jefe de las Fuerzas Armadas?",
+    "en": "Who is the Commander in Chief of the military?",
+    "choices": [
+      "El Presidente / The President",
+      "El Secretario de Defensa / The Secretary of Defense",
+      "El Congreso / Congress"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Quién firma los proyectos de ley para convertirlos en ley?",
+    "en": "Who signs bills to become laws?",
+    "choices": [
+      "El Presidente / The President",
+      "El vicepresidente / The Vice President",
+      "El Presidente de la Corte Suprema / Chief Justice"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Quién vetoa los proyectos de ley?",
+    "en": "Who vetoes bills?",
+    "choices": [
+      "El Presidente / The President",
+      "El Congreso / Congress",
+      "El Secretario de Estado / Secretary of State"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué hace el Gabinete del Presidente?",
+    "en": "What does the President’s Cabinet do?",
+    "choices": [
+      "Asesora al Presidente / Advises the President",
+      "Elabora leyes / Makes laws",
+      "Dirige las cortes / Runs the courts"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Nombre uno de los puestos del Gabinete.",
+    "en": "Name one Cabinet-level position.",
+    "choices": [
+      "Secretario de Defensa / Secretary of Defense",
+      "Jefe de Policía / Police Chief",
+      "Director de la CIA / CIA Director"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué hace el poder judicial?",
+    "en": "What does the judicial branch do?",
+    "choices": [
+      "Revisa las leyes / Reviews laws",
+      "Escribe las leyes / Writes laws",
+      "Veta las leyes / Vetoes laws"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuál es el tribunal más alto de los Estados Unidos?",
+    "en": "What is the highest court in the United States?",
+    "choices": [
+      "La Corte Suprema / The Supreme Court",
+      "La Corte de Apelaciones / Court of Appeals",
+      "El Tribunal de Reclamos / Claims Court"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuántos jueces hay en la Corte Suprema?",
+    "en": "How many justices are on the Supreme Court?",
+    "choices": [
+      "9 / 9",
+      "7 / 7",
+      "12 / 12"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Quién es el Presidente actual de la Corte Suprema de los Estados Unidos?",
+    "en": "Who is the Chief Justice of the United States now?",
+    "choices": [
+      "John Roberts / John Roberts",
+      "Sonia Sotomayor / Sonia Sotomayor",
+      "Clarence Thomas / Clarence Thomas"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Según nuestra Constitución, algunos poderes pertenecen al gobierno federal. ¿Cuál es un poder del gobierno federal?",
+    "en": "Under our Constitution, some powers belong to the federal government. What is one power of the federal government?",
+    "choices": [
+      "Imprimir dinero / To print money",
+      "Emitir licencias de conducir / To issue driver’s licenses",
+      "Establecer escuelas / To establish schools"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Según nuestra Constitución, algunos poderes pertenecen a los estados. ¿Cuál es un poder de los estados?",
+    "en": "Under our Constitution, some powers belong to the states. What is one power of the states?",
+    "choices": [
+      "Proveer educación / Provide education",
+      "Imprimir dinero / Print money",
+      "Declarar la guerra / Declare war"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Quién es el Gobernador actual de su estado?",
+    "en": "Who is the Governor of your state now?",
+    "choices": [
+      "Varía según el estado / Varies by state",
+      "El Presidente / The President",
+      "El Alcalde / The Mayor"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuál es la capital de su estado?",
+    "en": "What is the capital of your state?",
+    "choices": [
+      "Varía según el estado / Varies by state",
+      "Nueva York / New York City",
+      "Los Ángeles / Los Angeles"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuáles son los dos partidos políticos principales de los Estados Unidos?",
+    "en": "What are the two major political parties in the United States?",
+    "choices": [
+      "Demócrata y Republicano / Democratic and Republican",
+      "Demócrata y Verde / Democratic and Green",
+      "Republicano y Libertario / Republican and Libertarian"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuál es el partido político del Presidente actual?",
+    "en": "What is the political party of the President now?",
+    "choices": [
+      "Demócrata / Democratic",
+      "Republicano / Republican",
+      "Independiente / Independent"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cómo se llama el Presidente de la Cámara de Representantes en este momento?",
+    "en": "What is the name of the Speaker of the House of Representatives now?",
+    "choices": [
+      "Mike Johnson / Mike Johnson",
+      "Kevin McCarthy / Kevin McCarthy",
+      "Hakeem Jeffries / Hakeem Jeffries"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Hay cuatro enmiendas a la Constitución sobre quién puede votar. Describa una de ellas.",
+    "en": "There are four amendments to the Constitution about who can vote. Describe one of them.",
+    "choices": [
+      "Ciudadanos de 18 años o más pueden votar / Citizens 18 and older can vote",
+      "Solo propietarios pueden votar / Only property owners can vote",
+      "Solo hombres pueden votar / Only men can vote"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuál es una responsabilidad que corresponde solo a los ciudadanos de los Estados Unidos?",
+    "en": "What is one responsibility that is only for United States citizens?",
+    "choices": [
+      "Votar en una elección federal / Vote in a federal election",
+      "Pagar impuestos estatales / Pay state taxes",
+      "Servir como maestro / Serve as a teacher"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuál es un derecho que pueden ejercer solo los ciudadanos de los Estados Unidos?",
+    "en": "Name one right only for United States citizens.",
+    "choices": [
+      "Postularse para un cargo federal / Run for federal office",
+      "Viajar fuera del país / Travel abroad",
+      "Trabajar en cualquier lugar / Work anywhere"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿A qué mostramos lealtad cuando decimos el Juramento a la Bandera?",
+    "en": "To what do we show loyalty when we say the Pledge of Allegiance?",
+    "choices": [
+      "A la bandera y la nación / The flag and the nation",
+      "Al presidente / The President",
+      "Al Congreso / Congress"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuál es una promesa que usted hace cuando se convierte en ciudadano de los Estados Unidos?",
+    "en": "What is one promise you make when you become a United States citizen?",
+    "choices": [
+      "Obedecer las leyes de los Estados Unidos / Obey the laws of the United States",
+      "Votar en todas las elecciones / Vote in every election",
+      "Hablar solo inglés / Speak only English"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuántos años deben tener los ciudadanos para votar por el Presidente?",
+    "en": "How old do citizens have to be to vote for President?",
+    "choices": [
+      "18 años o más / 18 or older",
+      "21 años / 21",
+      "16 años / 16"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuál es una forma en que los estadounidenses pueden participar en su democracia?",
+    "en": "Name one way that Americans can participate in their democracy.",
+    "choices": [
+      "Votar / Vote",
+      "Ignorar las elecciones / Ignore elections",
+      "Evitar jurados / Avoid juries"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuál es la fecha límite para enviar la declaración federal de impuestos sobre ingresos?",
+    "en": "What is the last day you can send in federal income tax forms?",
+    "choices": [
+      "15 de abril / April 15",
+      "1 de enero / January 1",
+      "4 de julio / July 4"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuándo deben inscribirse todos los hombres en el Servicio Selectivo?",
+    "en": "When must all men register for the Selective Service?",
+    "choices": [
+      "Entre los 18 y 26 años / Between 18 and 26",
+      "A los 30 años / At age 30",
+      "Nunca / Never"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuál fue una de las razones por las que los colonos vinieron a América?",
+    "en": "What is one reason colonists came to America?",
+    "choices": [
+      "Libertad / Freedom",
+      "Buscar oro / To find gold",
+      "Escapar del calor / Escape the heat"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Quién vivía en América antes de la llegada de los europeos?",
+    "en": "Who lived in America before the Europeans arrived?",
+    "choices": [
+      "Indios americanos / American Indians",
+      "Europeos / Europeans",
+      "Esclavos africanos / African slaves"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué grupo de personas fue traído a América y vendido como esclavos?",
+    "en": "What group of people was taken to America and sold as slaves?",
+    "choices": [
+      "Africanos / Africans",
+      "Canadienses / Canadians",
+      "Rusos / Russians"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Por qué lucharon los colonos contra los británicos?",
+    "en": "Why did the colonists fight the British?",
+    "choices": [
+      "Porque los impuestos eran altos / Because of high taxes",
+      "Porque querían un rey / They wanted a king",
+      "Porque amaban al parlamento / They loved Parliament"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Quién escribió la Declaración de Independencia?",
+    "en": "Who wrote the Declaration of Independence?",
+    "choices": [
+      "Thomas Jefferson / Thomas Jefferson",
+      "George Washington / George Washington",
+      "John Adams / John Adams"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuándo se adoptó la Declaración de Independencia?",
+    "en": "When was the Declaration of Independence adopted?",
+    "choices": [
+      "4 de julio de 1776 / July 4, 1776",
+      "1 de enero de 1789 / January 1, 1789",
+      "14 de julio de 1775 / July 14, 1775"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Había 13 estados originales. Nombre tres.",
+    "en": "There were 13 original states. Name three.",
+    "choices": [
+      "Nueva York, Virginia y Georgia / New York, Virginia, and Georgia",
+      "California, Texas y Florida / California, Texas, and Florida",
+      "Ohio, Michigan y Iowa / Ohio, Michigan, and Iowa"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué ocurrió en la Convención Constitucional?",
+    "en": "What happened at the Constitutional Convention?",
+    "choices": [
+      "Se redactó la Constitución / The Constitution was written",
+      "Se destruyó la Constitución / The Constitution was destroyed",
+      "Se eligió al primer rey / The first king was chosen"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuándo fue escrita la Constitución?",
+    "en": "When was the Constitution written?",
+    "choices": [
+      "1787 / 1787",
+      "1776 / 1776",
+      "1800 / 1800"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Los escritos conocidos como “Los Documentos Federalistas” respaldaron la aprobación de la Constitución. Nombre uno de los autores.",
+    "en": "The Federalist Papers supported the passage of the U.S. Constitution. Name one of the writers.",
+    "choices": [
+      "James Madison / James Madison",
+      "Abraham Lincoln / Abraham Lincoln",
+      "Thomas Paine / Thomas Paine"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué es una cosa por la que Benjamin Franklin es famoso?",
+    "en": "What is one thing Benjamin Franklin is famous for?",
+    "choices": [
+      "Diplomático estadounidense / U.S. diplomat",
+      "Primer presidente / First President",
+      "Inventor de la radio / Inventor of the radio"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Quién fue el primer Presidente?",
+    "en": "Who was the first President?",
+    "choices": [
+      "George Washington / George Washington",
+      "John Adams / John Adams",
+      "Thomas Jefferson / Thomas Jefferson"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué territorio compró Estados Unidos a Francia en 1803?",
+    "en": "What territory did the United States buy from France in 1803?",
+    "choices": [
+      "Luisiana / Louisiana",
+      "Florida / Florida",
+      "Alaska / Alaska"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Mencione una guerra librada por Estados Unidos en los años 1800.",
+    "en": "Name one war fought by the United States in the 1800s.",
+    "choices": [
+      "Guerra Civil / Civil War",
+      "Primera Guerra Mundial / World War I",
+      "Guerra de Vietnam / Vietnam War"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Dé el nombre de la guerra entre el Norte y el Sur de los Estados Unidos.",
+    "en": "Name the U.S. war between the North and the South.",
+    "choices": [
+      "La Guerra Civil / The Civil War",
+      "La Guerra Revolucionaria / Revolutionary War",
+      "La Guerra de 1812 / War of 1812"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Mencione un problema que condujo a la Guerra Civil.",
+    "en": "Name one problem that led to the Civil War.",
+    "choices": [
+      "Esclavitud / Slavery",
+      "Control de petróleo / Oil control",
+      "Derechos de los estados occidentales / Western states rights"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué hizo la Proclamación de la Emancipación?",
+    "en": "What did the Emancipation Proclamation do?",
+    "choices": [
+      "Liberó a los esclavos / Freed the slaves",
+      "Declaró la guerra a España / Declared war on Spain",
+      "Vendió Alaska / Sold Alaska"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué hizo Susan B. Anthony?",
+    "en": "What did Susan B. Anthony do?",
+    "choices": [
+      "Luchó por los derechos de la mujer / Fought for women’s rights",
+      "Fue la primera senadora / First female senator",
+      "Inventó el teléfono / Invented the telephone"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Mencione una guerra librada por Estados Unidos en los años 1900.",
+    "en": "Name one war fought by the United States in the 1900s.",
+    "choices": [
+      "Segunda Guerra Mundial / World War II",
+      "Guerra de Crimea / Crimean War",
+      "Guerra Franco-Prusiana / Franco-Prussian War"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Quién era Presidente durante la Primera Guerra Mundial?",
+    "en": "Who was President during World War I?",
+    "choices": [
+      "Woodrow Wilson / Woodrow Wilson",
+      "Herbert Hoover / Herbert Hoover",
+      "Dwight Eisenhower / Dwight Eisenhower"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Quién era Presidente durante la Gran Depresión y la Segunda Guerra Mundial?",
+    "en": "Who was President during the Great Depression and World War II?",
+    "choices": [
+      "Franklin Roosevelt / Franklin Roosevelt",
+      "Harry Truman / Harry Truman",
+      "Calvin Coolidge / Calvin Coolidge"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué hizo Dwight Eisenhower antes de ser Presidente?",
+    "en": "What did Dwight Eisenhower do before he was President?",
+    "choices": [
+      "General del Ejército / Army General",
+      "Actor de cine / Movie Actor",
+      "Juez de la Corte Suprema / Supreme Court Justice"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Durante la Guerra Fría, ¿cuál era la principal preocupación de Estados Unidos?",
+    "en": "During the Cold War, what was the main concern of the United States?",
+    "choices": [
+      "Comunismo / Communism",
+      "Colonialismo / Colonialism",
+      "Imperialismo español / Spanish imperialism"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué movimiento trató de poner fin a la discriminación racial?",
+    "en": "What movement tried to end racial discrimination?",
+    "choices": [
+      "Movimiento por los Derechos Civiles / Civil Rights Movement",
+      "Movimiento Anti-Guerra / Anti-War Movement",
+      "Movimiento de Templanza / Temperance Movement"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué hizo Martin Luther King, Jr.?",
+    "en": "What did Martin Luther King, Jr. do?",
+    "choices": [
+      "Luchó por los Derechos Civiles / Fought for civil rights",
+      "Fue presidente / Was president",
+      "Inventó el Internet / Invented the Internet"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué suceso importante ocurrió el 11 de septiembre de 2001 en Estados Unidos?",
+    "en": "What major event happened on September 11, 2001, in the United States?",
+    "choices": [
+      "Terroristas atacaron Estados Unidos / Terrorists attacked the U.S.",
+      "Gran terremoto en California / Big earthquake in California",
+      "Huracán Katrina golpeó Nueva Orleans / Hurricane Katrina hit New Orleans"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Mencione una tribu de indios americanos en los Estados Unidos.",
+    "en": "Name one American Indian tribe in the United States.",
+    "choices": [
+      "Cherokee / Cherokee",
+      "Vikingo / Viking",
+      "Inca / Inca"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Nombre uno de los dos ríos más largos en Estados Unidos.",
+    "en": "Name one of the two longest rivers in the United States.",
+    "choices": [
+      "Misisipi / Mississippi",
+      "Hudson / Hudson",
+      "Colorado / Colorado"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué océano está en la costa oeste de Estados Unidos?",
+    "en": "What ocean is on the West Coast of the United States?",
+    "choices": [
+      "Pacífico / Pacific",
+      "Atlántico / Atlantic",
+      "Ártico / Arctic"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué océano está en la costa este de Estados Unidos?",
+    "en": "What ocean is on the East Coast of the United States?",
+    "choices": [
+      "Atlántico / Atlantic",
+      "Pacífico / Pacific",
+      "Índico / Indian"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Nombre un territorio de Estados Unidos.",
+    "en": "Name one U.S. territory.",
+    "choices": [
+      "Puerto Rico / Puerto Rico",
+      " Canadá / Canada",
+      "Texas / Texas"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Nombre un estado que tiene frontera con Canadá.",
+    "en": "Name one state that borders Canada.",
+    "choices": [
+      "Nueva York / New York",
+      "Florida / Florida",
+      "Texas / Texas"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Nombre un estado que tiene frontera con México.",
+    "en": "Name one state that borders Mexico.",
+    "choices": [
+      "Texas / Texas",
+      "Oregon / Oregon",
+      "Montana / Montana"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuál es la capital de Estados Unidos?",
+    "en": "What is the capital of the United States?",
+    "choices": [
+      "Washington, D.C. / Washington, D.C.",
+      "Nueva York / New York",
+      "Filadelfia / Philadelphia"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Dónde está la Estatua de la Libertad?",
+    "en": "Where is the Statue of Liberty?",
+    "choices": [
+      "Nueva York / New York",
+      "Boston / Boston",
+      "Los Ángeles / Los Angeles"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Por qué hay 13 franjas en la bandera?",
+    "en": "Why does the flag have 13 stripes?",
+    "choices": [
+      "Porque representen las 13 colonias originales / Because they represent the 13 original colonies",
+      "Porque representan los 13 presidentes / Because they represent 13 presidents",
+      "Porque es número de suerte / Because it’s a lucky number"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Por qué hay 50 estrellas en la bandera?",
+    "en": "Why does the flag have 50 stars?",
+    "choices": [
+      "Porque hay un estado por cada estrella / Because there is one for each state",
+      "Porque hay 50 senadores / Because there are 50 senators",
+      "Porque hay 50 presidentes / Because there are 50 presidents"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Cuál es el himno nacional de Estados Unidos?",
+    "en": "What is the name of the national anthem?",
+    "choices": [
+      "The Star-Spangled Banner / The Star-Spangled Banner",
+      "America the Beautiful / America the Beautiful",
+      "God Bless America / God Bless America"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Cuándo celebramos el Día de la Independencia?",
+    "en": "When do we celebrate Independence Day?",
+    "choices": [
+      "4 de julio / July 4",
+      "1 de mayo / May 1",
+      "25 de diciembre / December 25"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "Mencione dos días feriados nacionales de Estados Unidos.",
+    "en": "Name two national U.S. holidays.",
+    "choices": [
+      "Día de Acción de Gracias y Día del Trabajo / Thanksgiving and Labor Day",
+      "Día de la Madre y Día del Padre / Mother’s Day and Father’s Day",
+      "Cinco de Mayo y Día de San Patricio / Cinco de Mayo and St. Patrick’s Day"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué hacemos cuando nos ponemos de pie para el Juramento a la Bandera?",
+    "en": "What do we do when we stand for the Pledge of Allegiance?",
+    "choices": [
+      "Ponemos la mano sobre el corazón / Place our hand over our heart",
+      "Nos sentamos / Sit down",
+      "Nos damos la vuelta / Turn around"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuál es una razón por la que los estadounidenses deben pagar impuestos?",
+    "en": "What is one reason Americans pay taxes?",
+    "choices": [
+      "Para financiar servicios públicos / To fund public services",
+      "Para castigar a los ciudadanos / To punish citizens",
+      "Para pagar a la familia real / To pay a royal family"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿En qué año se creó la Nación?",
+    "en": "In what year was the Nation founded?",
+    "choices": [
+      "1776 / 1776",
+      "1492 / 1492",
+      "1865 / 1865"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Quién es conocido como el Padre de Nuestro País?",
+    "en": "Who is the Father of Our Country?",
+    "choices": [
+      "George Washington / George Washington",
+      "Abraham Lincoln / Abraham Lincoln",
+      "Thomas Edison / Thomas Edison"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Cuál fue la principal causa de la Guerra de Independencia?",
+    "en": "What was the main cause of the Revolutionary War?",
+    "choices": [
+      "Impuestos sin representación / Taxation without representation",
+      "Disputa por petróleo / Oil dispute",
+      "Invasión extraterrestre / Alien invasion"
+    ],
+    "answer": 0
+  },
+  {
+    "es": "¿Qué simboliza la Estatua de la Libertad?",
+    "en": "What does the Statue of Liberty symbolize?",
+    "choices": [
+      "Libertad / Freedom",
+      "Riqueza / Wealth",
+      "Poder militar / Military power"
+    ],
+    "answer": 0
+  }
+];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function initQuiz() {
+      const app = document.getElementById('app');
+      let currentSection = 0;
+      let score = 0;
+      const sectionContainer = document.createElement('div');
+      app.appendChild(sectionContainer);
+
+      function renderSection(sectionIndex) {
+        sectionContainer.innerHTML = '';
+        const start = sectionIndex * 10;
+        const end = start + 10;
+        const sectionQs = questions.slice(start, end);
+        const form = document.createElement('form');
+        form.className = 'space-y-6';
+
+        sectionQs.forEach((q, idx) => {
+          const shuffled = shuffle([...q.choices.entries()]);
+          const qDiv = document.createElement('div');
+          qDiv.className = 'p-4 bg-white rounded-lg shadow';
+
+          const qTitle = document.createElement('p');
+          qTitle.className = 'font-medium whitespace-pre-line';
+          qTitle.textContent = `${idx + 1}. Pregunta (ES): ${q.es}\nQuestion (EN): ${q.en}`;
+          qDiv.appendChild(qTitle);
+
+          shuffled.forEach(([origIndex, choice]) => {
+            const id = `s${sectionIndex}q${idx}c${origIndex}`;
+            const label = document.createElement('label');
+            label.className = 'block mt-2';
+            label.htmlFor = id;
+
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.id = id;
+            radio.name = `q${idx}`;
+            radio.value = origIndex;
+            radio.className = 'mr-2';
+
+            label.appendChild(radio);
+            label.append(choice);
+            qDiv.appendChild(label);
+          });
+
+          form.appendChild(qDiv);
+        });
+
+        const submitBtn = document.createElement('button');
+        submitBtn.type = 'submit';
+        submitBtn.textContent = 'Enviar sección';
+        submitBtn.className = 'mt-6 px-4 py-2 bg-blue-600 text-white rounded-lg';
+        form.appendChild(submitBtn);
+
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const data = new FormData(form);
+          let sectionScore = 0;
+          sectionQs.forEach((q, idx) => {
+            const val = data.get(`q${idx}`);
+            if (val !== null && Number(val) === q.answer) sectionScore++;
+          });
+          score += sectionScore;
+          showFeedback(sectionScore, sectionIndex);
+        });
+
+        sectionContainer.appendChild(form);
+      }
+
+      function showFeedback(sectionScore, sectionIndex) {
+        sectionContainer.innerHTML = '';
+        const totalInSection = 10;
+        const msg = document.createElement('p');
+        msg.className = 'text-lg font-semibold';
+        msg.textContent = `Resultados de la sección ${sectionIndex + 1}: ${sectionScore}/${totalInSection} correctas.`;
+        sectionContainer.appendChild(msg);
+
+        const motivacionales = [
+          '¡Muy bien! Ya completaste esta sección. Cada paso te acerca más a tu ciudadanía. ¡Sigue así!',
+          '¡Excelente trabajo! Recuerda: estudiar con calma y constancia te lleva al éxito. ¡Vamos por la próxima!',
+          '¡Felicitaciones por tu progreso! Estás más preparado hoy que ayer. No te detengas.',
+          '¡Lo estás haciendo muy bien! Ya superaste otra parte del camino. ¡Tu esfuerzo vale la pena!',
+          '¡Sigue adelante! Cada respuesta correcta es un paso más cerca de tu meta. ¡Tú puedes!',
+          '¡Vamos con fuerza! Ya estás más de la mitad del camino recorrido.',
+          '¡Orgullosos de ti! Estás cada vez más listo para el examen.',
+          '¡Falta poco! Sigue practicando y no bajes el ritmo.',
+          '¡Ya casi lo logras! Una sección más y estarás preparado.',
+          '¡Lo lograste! Terminaste las 100 preguntas. Estás listo para tu entrevista. ¡Felicidades!',
+        ];
+
+        const motivation = document.createElement('p');
+        motivation.className = 'mt-4 italic';
+        motivation.textContent = motivacionales[sectionIndex];
+        sectionContainer.appendChild(motivation);
+
+        if (sectionIndex + 1 < SECTIONS) {
+          const nextBtn = document.createElement('button');
+          nextBtn.textContent = 'Siguiente sección';
+          nextBtn.className = 'mt-6 px-4 py-2 bg-amber-500 text-white rounded-lg';
+          nextBtn.addEventListener('click', () => {
+            renderSection(sectionIndex + 1);
+          });
+          sectionContainer.appendChild(nextBtn);
+        } else {
+          const finalMsg = document.createElement('p');
+          finalMsg.className = 'mt-6 font-bold';
+          finalMsg.textContent = `¡Simulador completado! Puntuación final: ${score}/100`;
+          sectionContainer.appendChild(finalMsg);
+        }
+      }
+
+      renderSection(currentSection);
+    }
+
+    document.addEventListener('DOMContentLoaded', initQuiz);
+  </script>
+</body>
+</html>

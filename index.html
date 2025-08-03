@@ -1091,26 +1091,49 @@
         form.appendChild(submitBtn);
 
         form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const data = new FormData(form);
-          let sectionScore = 0;
-          sectionQs.forEach((q, idx) => {
-            const val = data.get(`q${idx}`);
-            if (val !== null && Number(val) === q.answer) sectionScore++;
-          });
-          score += sectionScore;
-          showFeedback(sectionScore, sectionIndex);
-        });
+  e.preventDefault();
+  const data = new FormData(form);
+
+  // NUEVO: array con true/false por pregunta
+  const statusArray = [];
+  let sectionScore = 0;
+
+  sectionQs.forEach((q, idx) => {
+    const val = data.get(`q${idx}`);
+    const correct = val !== null && Number(val) === q.answer;
+    statusArray.push(correct);
+    if (correct) sectionScore++;
+  });
+
+  score += sectionScore;
+  showFeedback(sectionScore, sectionIndex, statusArray); // pasamos el array
+});
+
 
         sectionContainer.appendChild(form);
       }
 
-      function showFeedback(sectionScore, sectionIndex) {
+      function showFeedback(sectionScore, sectionIndex, statusArray)  {
         sectionContainer.innerHTML = '';
         const totalInSection = 10;
         const msg = document.createElement('p');
         msg.className = 'text-lg font-semibold';
         msg.textContent = `Resultados de la sección ${sectionIndex + 1}: ${sectionScore}/${totalInSection} correctas.`;
+        // --- tabla de aciertos ---
+const table = document.createElement('div');
+table.className = 'mt-4 grid grid-cols-10 gap-2 text-lg';
+
+statusArray.forEach((ok, i) => {
+  const cell = document.createElement('div');
+  cell.className = 'text-center';
+  cell.textContent = ok ? '✓' : '✗';
+  cell.style.color = ok ? 'green' : 'red';
+  cell.title = `Pregunta ${i + 1}`;
+  table.appendChild(cell);
+});
+sectionContainer.appendChild(table);
+// --- fin tabla ---
+
         sectionContainer.appendChild(msg);
 
         const motivacionales = [
@@ -1178,4 +1201,5 @@
 
 </body>
 </html>
+
 

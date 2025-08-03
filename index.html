@@ -19,10 +19,7 @@
   <main id="app" class="max-w-4xl mx-auto p-6"></main>
   <footer class="text-center mt-12 text-sm text-gray-600">
     <p class="mb-2">
-      © 2025 MKMK • mail: <a href="mailto:info@mkmk.com" class="underline">info@mkmk.com</a> •
-      Tel: <a href="tel:+11234567890" class="underline">+1 (123) 456-7890</a>
-    </p>
-    <p>Síguenos: <a href="https://facebook.com/mkmk" class="underline">Facebook</a> | <a href="https://instagram.com/mkmk" class="underline">Instagram</a></p>
+      
     <p class="mt-4 font-medium">¡Gracias por estudiar con nosotros y confiar en tu futuro!</p>
   </footer>
   <script>
@@ -1119,20 +1116,31 @@
         const msg = document.createElement('p');
         msg.className = 'text-lg font-semibold';
         msg.textContent = `Resultados de la sección ${sectionIndex + 1}: ${sectionScore}/${totalInSection} correctas.`;
-        // --- tabla de aciertos ---
-const table = document.createElement('div');
-table.className = 'mt-4 grid grid-cols-10 gap-2 text-lg';
+        // --- lista de aciertos (vertical) ---
+const summaryList = document.createElement('div');
+summaryList.className = 'mt-4 space-y-1';
 
 statusArray.forEach((ok, i) => {
-  const cell = document.createElement('div');
-  cell.className = 'text-center';
-  cell.textContent = ok ? '✓' : '✗';
-  cell.style.color = ok ? 'green' : 'red';
-  cell.title = `Pregunta ${i + 1}`;
-  table.appendChild(cell);
+  const line = document.createElement('p');
+  line.className = 'flex items-center text-lg';
+
+  const num = document.createElement('span');
+  num.className = 'w-6';
+  num.textContent = `${i + 1}.`;
+
+  const icon = document.createElement('span');
+  icon.textContent = ok ? '✓' : '✗';
+  icon.style.color = ok ? 'green' : 'red';
+  icon.className = 'ml-2 font-bold';
+
+  line.appendChild(num);
+  line.appendChild(icon);
+  summaryList.appendChild(line);
 });
-sectionContainer.appendChild(table);
-// --- fin tabla ---
+
+sectionContainer.appendChild(summaryList);
+// --- fin lista ---
+
 
         sectionContainer.appendChild(msg);
 
@@ -1201,5 +1209,6 @@ sectionContainer.appendChild(table);
 
 </body>
 </html>
+
 
 
